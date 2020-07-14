@@ -2,7 +2,6 @@ import Api from '../api/Api';
 import actionType from './types/actionType';
 
 export const fetchHomeBanner = () => dispatch => {
-    console.log('dispatch：', dispatch);
     Api.getHomeBanner().then(response => {
         dispatch({
             type: actionType.FETCH_HOME_BANNER,

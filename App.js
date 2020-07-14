@@ -12,13 +12,13 @@ import AppRoute from './src/AppRoute';
 import { NavigationContainer } from '@react-navigation/native';
 
 const App = () => {
-  return (
-    <Provider store={store}>
-      <NavigationContainer>
-        <AppRoute/>
-      </NavigationContainer>
-    </Provider>
-  );
+    return (
+        <Provider store={store}>
+            <NavigationContainer>
+                <AppRoute />
+            </NavigationContainer>
+        </Provider>
+    );
 };
 
 export default App;

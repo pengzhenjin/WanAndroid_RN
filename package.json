@@ -10,6 +10,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@babel/plugin-proposal-decorators": "^7.10.4",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/bottom-tabs": "^5.5.2",
     "@react-navigation/drawer": "^5.8.2",
@@ -24,9 +25,11 @@
     "react-native-screens": "^2.8.0",
     "react-native-swiper": "^1.6.0",
     "react-native-vector-icons": "^6.6.0",
+    "react-native-webview": "^10.3.2",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
-    "redux-logger": "^3.0.6"
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.10.2",

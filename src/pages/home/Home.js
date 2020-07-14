@@ -2,17 +2,36 @@
  * 首页
  */
 import React from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {
+    StyleSheet,
+    View,
+} from 'react-native';
 import BaseContainer from '../../base/BaseContainer';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import CommonFlatList from '../../components/CommonFlatList';
 import Banner from '../../components/Banner';
 import ListFooter from '../../components/ListFooter';
 import ArticleItemRow from '../../components/ArticleItemRow';
-import {fetchHomeBanner, fetchHomeArticleList, fetchHomeArticleListMore} from '../../actions/homeAction';
+import * as actionCreators from '../../actions/homeAction';
+import Color from '../../utils/Color';
 
-class Home extends BaseContainer {
+const mapStateToProps = (state, ownProps) => {
+    return {
+        homeBanner: state.homeReducer.homeBanner,
+        page: state.homeReducer.page,
+        dataSource: state.homeReducer.dataSource,
+        isRenderFooter: state.homeReducer.isRenderFooter,
+        isFullData: state.homeReducer.isFullData,
+    };
+};
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return bindActionCreators(actionCreators, dispatch)
+};
+
+@connect(mapStateToProps, mapDispatchToProps)
+export default class Home extends BaseContainer {
     constructor(props) {
         super(props);
         this.state = {
@@ -24,10 +43,23 @@ class Home extends BaseContainer {
         this.fetchData();
     }
 
-    fetchData() {
-      this.props.fetchHomeBanner();
-        // fetchHomeBanner();
-        // fetchHomeArticleList();
+    fetchData = () => {
+        this.props.fetchHomeBanner();
+        this.props.fetchHomeArticleList();
+    }
+
+    onEndReachedFunc = () => {
+        const {isFullData, page} = this.props;
+        if (isFullData) {
+            return;
+        }
+        this.props.fetchHomeArticleListMore(page);
+    }
+
+    onRefreshFunc = () => {
+        this.setState({isRefreshing: true});
+        this.fetchData();
+        this.setState({isRefreshing: false});
     }
 
     renderItem = ({item, index}) => {
@@ -35,7 +67,7 @@ class Home extends BaseContainer {
             <ArticleItemRow
                 navigation={this.navigation}
                 item={item}
-                onCollectPress={() => {
+                onCollectFunc={() => {
                     // if (!isLogin) {
                     //   showToast(i18n('please-login-first'));
                     //   return navigation.navigate('Login');
@@ -52,41 +84,25 @@ class Home extends BaseContainer {
 
     renderHeader = () => {
         const {homeBanner} = this.props;
-        console.log('homeBanner：', homeBanner);
         return (
             <View>
-                <Banner bannerArr={homeBanner} navigation={this.navigation}/>
-                <View style={{height: 20}}/>
+                <Banner bannerArr={homeBanner} navigation={this.navigation} />
             </View>
         );
     };
 
     renderFooter = () => {
-        const {isRenderFooter, isFullData, themeColor} = this.props;
+        const {isRenderFooter, isFullData} = this.props;
         return (
             <ListFooter
                 isRenderFooter={isRenderFooter}
                 isFullData={isFullData}
-                indicatorColor={themeColor}
             />
         );
     };
 
-    onEndReached() {
-        const {isFullData, page} = this.props;
-        if (isFullData) {
-            return;
-        }
-        fetchHomeArticleListMore(page);
-    }
-
-    onRefresh() {
-        this.setState({isRefreshing: true});
-        this.fetchData();
-        this.setState({isRefreshing: false});
-    }
-
     render() {
+        console.log('datas：', this.props.dataSource);
         return (
             <View style={styles.container}>
                 <CommonFlatList
@@ -95,9 +111,9 @@ class Home extends BaseContainer {
                     renderItem={this.renderItem}
                     ListHeaderComponent={this.renderHeader}
                     ListFooterComponent={this.renderFooter}
-                    onEndReached={this.onEndReached.bind(this)}
-                    toRefresh={this.onRefresh.bind(this)}
-                    isRefreshing={this.state.isRefreshing}
+                    onPUll={this.onRefreshFunc}
+                    onEndReached={this.onEndReachedFunc}
+                    isPulling={this.state.isRefreshing}
                 />
             </View>
         );
@@ -109,27 +125,3 @@ const styles = StyleSheet.create({
         flex: 1,
     },
 });
-
-const mapStateToProps = (state, ownProps) => {
-    return {
-        page: state.homeReducer.page,
-        dataSource: state.homeReducer.dataSource,
-        homeBanner: state.homeReducer.homeBanner,
-        homeArticleList: state.homeReducer.homeArticleList,
-        isRenderFooter: state.homeReducer.isRenderFooter,
-        isFullData: state.homeReducer.isFullData,
-    };
-};
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-    // return {
-    //     fetchHomeBanner: bindActionCreators(fetchHomeBanner, dispatch),
-    //     fetchHomeArticleList: bindActionCreators(fetchHomeArticleList, dispatch),
-    // };
-    return {
-        fetchHomeBanner: () => dispatch(fetchHomeBanner()),
-        fetchHomeArticleList: () => dispatch(fetchHomeArticleList()),
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
