@@ -7,15 +7,16 @@ import {
     View,
 } from 'react-native';
 import BaseContainer from '../../base/BaseContainer';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 import CommonFlatList from '../../components/CommonFlatList';
 import Banner from '../../components/Banner';
 import ListFooter from '../../components/ListFooter';
 import ArticleItemRow from '../../components/ArticleItemRow';
 import * as actionCreators from '../../actions/homeAction';
-import { Avatar, ListItem } from 'react-native-elements'
-import Color from "../../utils/Color";
+import {ListItem} from 'react-native-elements';
+import Color from '../../utils/Color';
+import Loading from '../../components/Loading';
 
 const mapStateToProps = (state, ownProps) => {
     return {
@@ -24,11 +25,13 @@ const mapStateToProps = (state, ownProps) => {
         dataSource: state.homeReducer.dataSource,
         isRenderFooter: state.homeReducer.isRenderFooter,
         isFullData: state.homeReducer.isFullData,
+
+        isShowLoading: state.loadingReducer.isShowLoading, // 是否显示 loading
     };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-    return bindActionCreators(actionCreators, dispatch)
+    return bindActionCreators(actionCreators, dispatch);
 };
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -36,7 +39,7 @@ export default class Home extends BaseContainer {
     constructor(props) {
         super(props);
         this.state = {
-            isRefreshing: false,
+            isRefreshing: false,    // 是否在刷新时显示指示器
         };
     }
 
@@ -47,7 +50,7 @@ export default class Home extends BaseContainer {
     fetchData = () => {
         this.props.fetchHomeBanner();
         this.props.fetchHomeArticleList();
-    }
+    };
 
     onEndReachedFunc = () => {
         const {isFullData, page} = this.props;
@@ -55,13 +58,13 @@ export default class Home extends BaseContainer {
             return;
         }
         this.props.fetchHomeArticleListMore(page);
-    }
+    };
 
     onRefreshFunc = () => {
         this.setState({isRefreshing: true});
         this.fetchData();
         this.setState({isRefreshing: false});
-    }
+    };
 
     /**
      * 收藏
@@ -69,7 +72,7 @@ export default class Home extends BaseContainer {
      * @param index
      */
     onCollectFunc = (item, index) => {
-        console.log('点击了收藏，', item.id)
+        console.log('点击了收藏，', item.id);
         // if (!isLogin) {
         //   showToast(i18n('please-login-first'));
         //   return navigation.navigate('Login');
@@ -79,7 +82,7 @@ export default class Home extends BaseContainer {
         // } else {
         //   fetchHomeAddCollect(item.id, index);
         // }
-    }
+    };
 
     /**
      * 条状到文章详情页面
@@ -87,8 +90,8 @@ export default class Home extends BaseContainer {
      */
     gotoArticleDetailPage = (item) => {
         const {title, link} = item;
-        this.navigation.navigate('CommonWebView', {title: title, url: link,});
-    }
+        this.navigation.navigate('CommonWebView', {title: title, url: link});
+    };
 
     /**
      * 渲染 ListItem 右边到图片
@@ -100,16 +103,16 @@ export default class Home extends BaseContainer {
             return {
                 containerStyle: {width: 120, height: 180},
                 source: {uri: item.envelopePic},
-            }
+            };
         } else {
             return {
                 size: 120,
                 title: item.superChapterName,
                 titleStyle: {fontSize: 18},
                 overlayContainerStyle: {backgroundColor: Color.THEME},
-            }
+            };
         }
-    }
+    };
 
     renderItem = ({item, index}) => {
         return (
@@ -133,7 +136,7 @@ export default class Home extends BaseContainer {
         const {homeBanner} = this.props;
         return (
             <View>
-                <Banner bannerArr={homeBanner} navigation={this.navigation} />
+                <Banner bannerArr={homeBanner} navigation={this.navigation}/>
             </View>
         );
     };
@@ -149,18 +152,18 @@ export default class Home extends BaseContainer {
     };
 
     render() {
-        console.log('datas：', this.props.dataSource);
         return (
             <View style={styles.container}>
+                <Loading isVisible={this.props.isShowLoading} title='正在加载...'/>
                 <CommonFlatList
                     data={this.props.dataSource}
                     keyExtractor={item => item.id.toString()}
                     renderItem={this.renderItem}
                     ListHeaderComponent={this.renderHeader}
                     ListFooterComponent={this.renderFooter}
+                    isPulling={this.state.isRefreshing}
                     onPUll={this.onRefreshFunc}
                     onEndReached={this.onEndReachedFunc}
-                    isPulling={this.state.isRefreshing}
                 />
             </View>
         );

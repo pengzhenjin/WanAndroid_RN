@@ -1,8 +1,8 @@
-import React, { PureComponent } from 'react';
+import React, {PureComponent} from 'react';
 import {
     StyleSheet,
     FlatList,
-    RefreshControl
+    RefreshControl,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Color from '../utils/Color';

@@ -4,7 +4,7 @@ const initialState = {
     homeBanner: [], // 首页轮播数据
     page: 1,
     dataSource: [], // 列表数据源
-    isRenderFooter: false, // 是否渲染列表footer
+    isRenderFooter: false, // 是否渲染列表 footer
     isFullData: false, // 是否加载完全部数据
 };
 
