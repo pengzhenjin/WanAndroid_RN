@@ -14,7 +14,8 @@ import Banner from '../../components/Banner';
 import ListFooter from '../../components/ListFooter';
 import ArticleItemRow from '../../components/ArticleItemRow';
 import * as actionCreators from '../../actions/homeAction';
-import Color from '../../utils/Color';
+import { Avatar, ListItem } from 'react-native-elements'
+import Color from "../../utils/Color";
 
 const mapStateToProps = (state, ownProps) => {
     return {
@@ -62,22 +63,68 @@ export default class Home extends BaseContainer {
         this.setState({isRefreshing: false});
     }
 
+    /**
+     * 收藏
+     * @param item
+     * @param index
+     */
+    onCollectFunc = (item, index) => {
+        console.log('点击了收藏，', item.id)
+        // if (!isLogin) {
+        //   showToast(i18n('please-login-first'));
+        //   return navigation.navigate('Login');
+        // }
+        // if (item.collect) {
+        //   fetchHomeCancelCollect(item.id, index);
+        // } else {
+        //   fetchHomeAddCollect(item.id, index);
+        // }
+    }
+
+    /**
+     * 条状到文章详情页面
+     * @param item
+     */
+    gotoArticleDetailPage = (item) => {
+        const {title, link} = item;
+        this.navigation.navigate('CommonWebView', {title: title, url: link,});
+    }
+
+    /**
+     * 渲染 ListItem 右边到图片
+     * @param item
+     * @returns
+     */
+    renderItemRightAvatar = (item) => {
+        if (item.envelopePic) {
+            return {
+                containerStyle: {width: 120, height: 180},
+                source: {uri: item.envelopePic},
+            }
+        } else {
+            return {
+                size: 120,
+                title: item.superChapterName,
+                titleStyle: {fontSize: 18},
+                overlayContainerStyle: {backgroundColor: Color.THEME},
+            }
+        }
+    }
+
     renderItem = ({item, index}) => {
         return (
-            <ArticleItemRow
-                navigation={this.navigation}
-                item={item}
-                onCollectFunc={() => {
-                    // if (!isLogin) {
-                    //   showToast(i18n('please-login-first'));
-                    //   return navigation.navigate('Login');
-                    // }
-                    // if (item.collect) {
-                    //   fetchHomeCancelCollect(item.id, index);
-                    // } else {
-                    //   fetchHomeAddCollect(item.id, index);
-                    // }
-                }}
+            <ListItem
+                rightAvatar={this.renderItemRightAvatar(item)}
+                title={item.title}
+                titleProps={{numberOfLines: 2}}
+                subtitle={
+                    <ArticleItemRow
+                        item={item}
+                        onCollectFunc={() => this.onCollectFunc(item, index)}
+                    />
+                }
+                onPress={() => this.gotoArticleDetailPage(item)}
+                bottomDivider
             />
         );
     };
