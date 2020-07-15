@@ -2,7 +2,7 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Icon } from 'react-native-elements';
 
 import Home from './pages/home/Home';
 import Project from './pages/project/Project';
@@ -13,26 +13,30 @@ import Search from './pages/search/Search';
 import CommonWebView from './pages/webview/CommonWebView';
 
 const bottomTabItemOption = ({route}) => {
-    let tabBarLabel, tabBarIcon;
+    let tabBarLabel, tabBarIcon, tabBarIconType;
     switch (route.name) {
         case 'Home': {
             tabBarLabel = '首页';
             tabBarIcon = 'home';
+            tabBarIconType = 'material'
             break;
         }
         case 'Project': {
             tabBarLabel = '项目';
-            tabBarIcon = 'card-text';
+            tabBarIcon = 'subject';
+            tabBarIconType = 'material'
             break;
         }
         case 'System': {
             tabBarLabel = '体系';
             tabBarIcon = 'layers';
+            tabBarIconType = 'material'
             break;
         }
         case 'WxArticle': {
             tabBarLabel = '公众号';
-            tabBarIcon = 'account-group';
+            tabBarIcon = 'group';
+            tabBarIconType = 'material'
             break;
         }
     }
@@ -40,7 +44,12 @@ const bottomTabItemOption = ({route}) => {
         {
             tabBarLabel: tabBarLabel,
             tabBarIcon: ({focused, color, size}) => {
-                return <Icon name={tabBarIcon} color={color} size={size} />;
+                return <Icon
+                    name={tabBarIcon}
+                    type={tabBarIconType}
+                    color={color}
+                    size={size}
+                />;
             },
 
         }
@@ -80,7 +89,7 @@ const stackItemOption = ({route, navigation}) => {
                     <TouchableOpacity onPress={() => {
                         navigation.navigate('Login');
                     }}>
-                        <Icon name="account-circle" size={32} />
+                        <Icon name="account-circle" type='material' size={32} />
                     </TouchableOpacity>
                 );
             };
@@ -89,19 +98,19 @@ const stackItemOption = ({route, navigation}) => {
                     <TouchableOpacity onPress={() => {
                         navigation.navigate('Search');
                     }}>
-                        <Icon name="magnify" size={32} />
+                        <Icon name="search" type='material' size={32} />
                     </TouchableOpacity>
                 );
             };
             headerLeftContainerStyle = {
                 justifyContent: 'center',
                 alignItems: 'center',
-                padding: 10,
+                paddingLeft: 10,
             };
             headerRightContainerStyle = {
                 justifyContent: 'center',
                 alignItems: 'center',
-                padding: 10,
+                paddingRight: 10,
             };
             break;
         }

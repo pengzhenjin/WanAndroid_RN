@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Color from '../utils/Color';
 import globalStyles from '../styles/globalStyles';
 import Touchable from './Touchable';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { Icon } from 'react-native-elements';
 
 class ArticleItemRow extends PureComponent {
     constructor(props) {
@@ -36,7 +36,8 @@ class ArticleItemRow extends PureComponent {
                         <View style={styles.item_like_time_container}>
                             <Touchable isPreventDouble={false} onPress={onCollectFunc}>
                                 <Icon
-                                    name={'md-heart'}
+                                    name='favorite'
+                                    type='material'
                                     size={32}
                                     color={item.collect ? Color.COLLECT : Color.ICON_GRAY}
                                 />
