@@ -1,8 +1,8 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Icon } from 'react-native-elements';
+import {TouchableOpacity} from 'react-native';
+import {createStackNavigator} from '@react-navigation/stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {Icon} from 'react-native-elements';
 
 import Home from './pages/home/Home';
 import Project from './pages/project/Project';
@@ -11,6 +11,7 @@ import WxArticle from './pages/wxarticle/WxArticle';
 import Login from './pages/user/Login';
 import Search from './pages/search/Search';
 import CommonWebView from './pages/webview/CommonWebView';
+import Register from './pages/user/Register';
 
 const bottomTabItemOption = ({route}) => {
     let tabBarLabel, tabBarIcon, tabBarIconType;
@@ -18,25 +19,25 @@ const bottomTabItemOption = ({route}) => {
         case 'Home': {
             tabBarLabel = '首页';
             tabBarIcon = 'home';
-            tabBarIconType = 'material'
+            tabBarIconType = 'material';
             break;
         }
         case 'Project': {
             tabBarLabel = '项目';
             tabBarIcon = 'subject';
-            tabBarIconType = 'material'
+            tabBarIconType = 'material';
             break;
         }
         case 'System': {
             tabBarLabel = '体系';
             tabBarIcon = 'layers';
-            tabBarIconType = 'material'
+            tabBarIconType = 'material';
             break;
         }
         case 'WxArticle': {
             tabBarLabel = '公众号';
             tabBarIcon = 'group';
-            tabBarIconType = 'material'
+            tabBarIconType = 'material';
             break;
         }
     }
@@ -66,10 +67,10 @@ const Main = () => {
     const BottomTab = createBottomTabNavigator();
     return (
         <BottomTab.Navigator initialRouteName="Home" tabBarOptions={bottomTabOptions}>
-            <BottomTab.Screen name="Home" component={Home} options={bottomTabItemOption} />
-            <BottomTab.Screen name="Project" component={Project} options={bottomTabItemOption} />
-            <BottomTab.Screen name="System" component={System} options={bottomTabItemOption} />
-            <BottomTab.Screen name="WxArticle" component={WxArticle} options={bottomTabItemOption} />
+            <BottomTab.Screen name="Home" component={Home} options={bottomTabItemOption}/>
+            <BottomTab.Screen name="Project" component={Project} options={bottomTabItemOption}/>
+            <BottomTab.Screen name="System" component={System} options={bottomTabItemOption}/>
+            <BottomTab.Screen name="WxArticle" component={WxArticle} options={bottomTabItemOption}/>
         </BottomTab.Navigator>
     );
 };
@@ -89,7 +90,7 @@ const stackItemOption = ({route, navigation}) => {
                     <TouchableOpacity onPress={() => {
                         navigation.navigate('Login');
                     }}>
-                        <Icon name="account-circle" type='material' size={32} />
+                        <Icon name="account-circle" type='material' size={32}/>
                     </TouchableOpacity>
                 );
             };
@@ -98,7 +99,7 @@ const stackItemOption = ({route, navigation}) => {
                     <TouchableOpacity onPress={() => {
                         navigation.navigate('Search');
                     }}>
-                        <Icon name="search" type='material' size={32} />
+                        <Icon name="search" type='material' size={32}/>
                     </TouchableOpacity>
                 );
             };
@@ -117,6 +118,11 @@ const stackItemOption = ({route, navigation}) => {
         case 'Login': {
             headerShown = true;
             headerTitle = '登录';
+            break;
+        }
+        case 'Register': {
+            headerShown = true;
+            headerTitle = '注册';
             break;
         }
         case 'Search': {
@@ -149,10 +155,11 @@ const AppRoute = () => {
     const Stack = createStackNavigator();
     return (
         <Stack.Navigator initialRouteName="Main">
-            <Stack.Screen name="Main" component={Main} options={stackItemOption} />
-            <Stack.Screen name="Login" component={Login} options={stackItemOption} />
-            <Stack.Screen name="Search" component={Search} options={stackItemOption} />
-            <Stack.Screen name="CommonWebView" component={CommonWebView} options={stackItemOption} />
+            <Stack.Screen name="Main" component={Main} options={stackItemOption}/>
+            <Stack.Screen name="Login" component={Login} options={stackItemOption}/>
+            <Stack.Screen name="Register" component={Register} options={stackItemOption}/>
+            <Stack.Screen name="Search" component={Search} options={stackItemOption}/>
+            <Stack.Screen name="CommonWebView" component={CommonWebView} options={stackItemOption}/>
         </Stack.Navigator>
     );
 };

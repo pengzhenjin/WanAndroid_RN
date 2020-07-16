@@ -13,7 +13,7 @@ import CommonFlatList from '../../components/CommonFlatList';
 import Banner from '../../components/Banner';
 import ListFooter from '../../components/ListFooter';
 import ArticleItemRow from '../../components/ArticleItemRow';
-import * as actionCreators from '../../actions/homeAction';
+import * as actionCreators from '../../redux/actions/homeAction';
 import {ListItem} from 'react-native-elements';
 import Color from '../../utils/Color';
 import Loading from '../../components/Loading';
@@ -73,6 +73,7 @@ export default class Home extends BaseContainer {
      */
     onCollectFunc = (item, index) => {
         console.log('点击了收藏，', item.id);
+        return this.navigation.navigate('Login');
         // if (!isLogin) {
         //   showToast(i18n('please-login-first'));
         //   return navigation.navigate('Login');

@@ -1,4 +1,4 @@
-import Api from '../api/Api';
+import Api from '../../api/Api';
 import actionType from './types/actionType';
 
 export const fetchHomeBanner = () => dispatch => {

@@ -1,5 +1,5 @@
 /**
- * 登录
+ * 注册
  */
 import React from 'react';
 import {
@@ -10,39 +10,28 @@ import BaseContainer from '../../base/BaseContainer';
 import {
     Input,
     Button,
-    Text,
     Icon,
 } from 'react-native-elements';
-import Color from '../../utils/Color';
 import Loading from '../../components/Loading';
 
-class Login extends BaseContainer {
+class Register extends BaseContainer {
     constructor(props) {
         super(props);
         this.state = {
             account: '',
             password: '',
+            repassword: '',
         };
     }
 
-    /**
-     * 登录
-     */
-    loginFunc = () => {
+    registerFunc = () => {
 
-    };
-
-    /**
-     * 跳转到注册页面
-     */
-    gotoRegisterPage = () => {
-        this.navigation.navigate('Register');
     };
 
     render() {
         return (
             <View style={styles.container}>
-                <Loading isVisible={false} title='正在登录...'/>
+                <Loading isVisible={false} title='正在注册...'/>
                 <Input
                     placeholder='请输入用户名'
                     textContentType='username'
@@ -53,9 +42,12 @@ class Login extends BaseContainer {
                     textContentType='password'
                     leftIcon={<Icon name='lock' size={24}/>}
                 />
-
-                <Text style={styles.register_txt} onPress={this.gotoRegisterPage}>去注册</Text>
-                <Button buttonStyle={styles.login_btn} onPress={this.loginFunc} title='登录'/>
+                <Input
+                    placeholder='请输入确认密码'
+                    textContentType='password'
+                    leftIcon={<Icon name='lock' size={24}/>}
+                />
+                <Button buttonStyle={styles.register_btn} onPress={this.registerFunc} title='注册'/>
             </View>
         );
     }
@@ -66,14 +58,10 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 20,
     },
-    register_txt: {
-        fontSize: 16,
-        color: Color.THEME,
-        alignSelf: 'flex-end',
-    },
-    login_btn: {
+    register_btn: {
         marginTop: 30,
     },
 });
 
-export default Login;
+
+export default Register;
